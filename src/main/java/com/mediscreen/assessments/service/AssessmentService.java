@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface AssessmentService {
 
-    public Assessment getAssessmentByPatient (Integer patientId);
+    public Assessment getAssessmentByPatientId(Integer patientId);
 
     public List<Assessment> getAssessmentByFamilyName(String familyName);
 
