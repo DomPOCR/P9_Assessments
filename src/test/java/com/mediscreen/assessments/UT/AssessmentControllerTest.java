@@ -15,7 +15,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -38,6 +42,7 @@ public class AssessmentControllerTest {
     Integer patientId = 5;
     String patientFirstName = "Jack";
     String patientLastName = "Bauer";
+    String patientLastNameUnknown = "Bond";
     int patientAge = 35;
     String patientSex = "M";
     Integer assessmentNbOfTrigger = 1;
@@ -55,7 +60,7 @@ public class AssessmentControllerTest {
         Mockito.when(assessmentService.getAssessmentByPatientId(anyInt())).thenReturn(assessmentTest);
 
         //WHEN THEN
-        mockMvc.perform(get("/assess/5")
+        mockMvc.perform(get("/assessment/" + assessmentTest.getPatientId())
                .contentType(MediaType.APPLICATION_JSON)
                .accept(MediaType.APPLICATION_JSON))
                .andDo(print())
@@ -70,7 +75,7 @@ public class AssessmentControllerTest {
 
         //WHEN THEN
         try {
-            mockMvc.perform(get("/assess/99")
+            mockMvc.perform(get("/assessment/99")
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON))
                     .andDo(print());
@@ -79,4 +84,36 @@ public class AssessmentControllerTest {
         }
     }
 
+    @Test
+    public void getAssessmentByFamilyNameTest() throws Exception {
+
+        //GIVEN
+        List<Assessment> assessmentListTest = new ArrayList<>();
+        assessmentListTest.add(assessmentTest);
+        Mockito.when(assessmentService.getAssessmentByFamilyName(any(String.class))).thenReturn(assessmentListTest);
+
+        //WHEN THEN
+        mockMvc.perform(get("/assessment/familyname/" + assessmentTest.getPatientLastName())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void getAssessmentByFamilyName_NotFoundTest() throws Exception {
+
+        //GIVEN
+        Mockito.when(assessmentService.getAssessmentByPatientId(anyInt())).thenReturn(null);
+
+        //WHEN THEN
+        try {
+            mockMvc.perform(get("/assessment/familyname/" + patientLastNameUnknown)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .accept(MediaType.APPLICATION_JSON))
+                    .andDo(print());
+        } catch (Exception e) {
+            assertTrue(e.getMessage().contains("Patients with family name : " + patientLastNameUnknown + " not found"));
+        }
+    }
 }

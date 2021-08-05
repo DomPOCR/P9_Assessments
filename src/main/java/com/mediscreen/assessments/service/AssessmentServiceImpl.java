@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -53,8 +54,8 @@ public class AssessmentServiceImpl implements AssessmentService {
                 nbOfTriggers = nbOfTriggers + searchTriggers(n);
             }
             assessment.setAssessmentNbOfTrigger(nbOfTriggers);
-
             assessment.setAssessmentLevel(calculateLevelOfAssessment(assessment.getPatientAge(), assessment.getPatientSex(), assessment.getAssessmentNbOfTrigger()));
+
             return assessment;
         }
         else return null;
@@ -64,8 +65,16 @@ public class AssessmentServiceImpl implements AssessmentService {
     @Override
     public List<Assessment> getAssessmentByFamilyName(String familyName) {
 
+        List<Assessment> assessmentList = new ArrayList<>();
+        List<Patient> patientList = patientService.getPatientByFamilyName(familyName);
+        if (patientList != null) {
 
-        return null;
+            for (Patient p : patientList) {
+                assessmentList.add(getAssessmentByPatientId(p.getId()));
+            }
+            return assessmentList;
+        }
+        else return null;
     }
 
 
