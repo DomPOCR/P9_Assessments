@@ -23,22 +23,20 @@ public class AssessmentController {
         this.assessmentService = assessmentService;
     }
 
-    @GetMapping(value = "assessment/{id}")
+    @GetMapping(value = "assess/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Assessment getAssessmentByPatientId(@PathVariable("id") Integer patientId) throws AssessmentException {
 
-        Assessment assessmentResult;
+        Assessment assessmentResult = null;
+        String eMess = null;
         assessmentResult = assessmentService.getAssessmentByPatientId(patientId);
-
+        if (assessmentResult == null) {
+            eMess = "Patient id " + patientId + " not found";
+            logger.error(eMess);
+            throw new AssessmentException(eMess);
+        }
         logger.info("Assessment OK for patient id : " +patientId);
         return assessmentResult;
-    }
-
-    @GetMapping(value = "assessment/hello")
-    @ResponseStatus(HttpStatus.OK)
-    public String hello(){
-        logger.info("Hello OK");
-        return "Hello";
     }
 
 }

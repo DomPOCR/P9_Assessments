@@ -3,6 +3,7 @@ package com.mediscreen.assessments.service;
 import com.mediscreen.assessments.dto.Note;
 import com.mediscreen.assessments.dto.Patient;
 import com.mediscreen.assessments.model.Assessment;
+import com.mediscreen.assessments.web.exception.AssessmentException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +36,12 @@ public class AssessmentServiceImpl implements AssessmentService {
     public Assessment getAssessmentByPatientId(Integer patientId) {
 
         Assessment assessment = new Assessment();
-        Patient patient = patientService.getPatientById(patientId);
-        List<Note> noteList = noteService.getPatientNoteByPatientId(patientId);
-
         int nbOfTriggers = 0;
 
+        Patient patient = patientService.getPatientById(patientId);
         if (patient != null) {
+
+            List<Note> noteList = noteService.getPatientNoteByPatientId(patientId);
 
             assessment.setPatientId(patientId);
             assessment.setPatientFirstName(patient.getFirstName());
@@ -53,13 +54,17 @@ public class AssessmentServiceImpl implements AssessmentService {
             }
             assessment.setAssessmentNbOfTrigger(nbOfTriggers);
 
-            assessment.setAssessmentLevel(calculateLevelOfAssessment(assessment.getPatientAge(),assessment.getPatientSex(), assessment.getAssessmentNbOfTrigger()));
+            assessment.setAssessmentLevel(calculateLevelOfAssessment(assessment.getPatientAge(), assessment.getPatientSex(), assessment.getAssessmentNbOfTrigger()));
+            return assessment;
         }
-        return assessment;
+        else return null;
+
     }
 
     @Override
     public List<Assessment> getAssessmentByFamilyName(String familyName) {
+
+
         return null;
     }
 
