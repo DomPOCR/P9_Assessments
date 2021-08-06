@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-@FeignClient(name = "note", url = "http://localhost:8082")
+@FeignClient(name = "note", url = "http://note:8082")
 public interface NoteProxy {
 
     @GetMapping(value = "/patHistory/patient/{patientId}")
