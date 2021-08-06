@@ -30,7 +30,7 @@ public class AssessmentController {
     @ResponseStatus(HttpStatus.OK)
     public Assessment getAssessmentByPatientId(@PathVariable("id") Integer patientId) throws AssessmentException {
 
-        Assessment assessmentResult = new Assessment();
+        Assessment assessmentResult = null;
         String eMess = null;
         assessmentResult = assessmentService.getAssessmentByPatientId(patientId);
         if (assessmentResult == null) {
@@ -46,7 +46,7 @@ public class AssessmentController {
     @ResponseStatus(HttpStatus.OK)
     public List<Assessment> getAssessmentsByFamilyName(@PathVariable("familyName") String familyName) throws AssessmentException {
 
-        List<Assessment> assessmentResult = new ArrayList<Assessment>();
+        List<Assessment> assessmentResult = null;
         String eMess = null;
 
         assessmentResult = assessmentService.getAssessmentByFamilyName(familyName);
