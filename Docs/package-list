@@ -1,0 +1,8 @@
+com.mediscreen.assessments
+com.mediscreen.assessments.config
+com.mediscreen.assessments.dto
+com.mediscreen.assessments.model
+com.mediscreen.assessments.proxies
+com.mediscreen.assessments.service
+com.mediscreen.assessments.web.controller
+com.mediscreen.assessments.web.exception

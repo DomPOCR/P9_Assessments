@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -26,12 +25,18 @@ public class AssessmentController {
         this.assessmentService = assessmentService;
     }
 
+    /**
+     *
+     * @param patientId Patient ID
+     * @return assess for the patient id
+     * @throws AssessmentException if patient not found
+     */
     @GetMapping(value = "assessment/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Assessment getAssessmentByPatientId(@PathVariable("id") Integer patientId) throws AssessmentException {
 
-        Assessment assessmentResult = null;
-        String eMess = null;
+        Assessment assessmentResult;
+        String eMess;
         assessmentResult = assessmentService.getAssessmentByPatientId(patientId);
         if (assessmentResult == null) {
             eMess = "Patient id " + patientId + " not found";
@@ -42,12 +47,18 @@ public class AssessmentController {
         return assessmentResult;
     }
 
+    /**
+     *
+     * @param familyName Name of family
+     * @return list of assess by family name
+     * @throws AssessmentException if family name not exist
+     */
     @GetMapping(value = "assessment/familyname/{familyName}")
     @ResponseStatus(HttpStatus.OK)
     public List<Assessment> getAssessmentsByFamilyName(@PathVariable("familyName") String familyName) throws AssessmentException {
 
-        List<Assessment> assessmentResult = null;
-        String eMess = null;
+        List<Assessment> assessmentResult;
+        String eMess;
 
         assessmentResult = assessmentService.getAssessmentByFamilyName(familyName);
         if ((assessmentResult == null) || (assessmentResult.size() == 0)) {
