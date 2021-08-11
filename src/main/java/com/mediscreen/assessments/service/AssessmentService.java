@@ -1,14 +1,23 @@
 package com.mediscreen.assessments.service;
 
 import com.mediscreen.assessments.model.Assessment;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 public interface AssessmentService {
 
-    public Assessment getAssessmentByPatientId(Integer patientId);
+    /**
+     *
+     * @param patientId patient id
+     * @return assessment for patient
+     */
+    Assessment getAssessmentByPatientId(Integer patientId);
 
-    public List<Assessment> getAssessmentByFamilyName(String familyName);
+    /**
+     *
+     * @param familyName name of family
+     * @return list of assessments by family name
+     */
+    List<Assessment> getAssessmentByFamilyName(String familyName);
 
 }
