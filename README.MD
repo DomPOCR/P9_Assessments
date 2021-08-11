@@ -23,7 +23,7 @@ Check Patient README.MD for global installation.
 ### Get Assessment by Family Name
 - GET http://assessment:8083/assessment/familyname?familyName=name_of_family
 
-#Architecture
+# Architecture
 ![Alt Text](/Archi.png)
 
 
